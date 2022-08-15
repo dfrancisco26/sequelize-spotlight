@@ -1,8 +1,6 @@
-const pool = require('../lib/utils/pool');
-const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const UserService = require('../lib/services/UserService');
+const db = require('../lib/models');
 
 // Dummy user for testing
 const mockUser = {
@@ -20,7 +18,7 @@ const registerAndLogin = async (userProps = {}) => {
   const agent = request.agent(app);
 
   // Create a user to sign in with
-  const user = await UserService.create({ ...mockUser, ...userProps });
+  const user = await db.User.create({ ...mockUser, ...userProps });
 
   // ...then sign in
   const { email } = user;
@@ -29,19 +27,20 @@ const registerAndLogin = async (userProps = {}) => {
 };
 
 describe('user routes', () => {
-  beforeEach(() => {
-    return setup(pool);
+  beforeEach(async () => {
+    await db.sequelize.sync({ force: true });
   });
-
   it('creates a new user', async () => {
     const res = await request(app).post('/api/v1/users').send(mockUser);
     const { firstName, lastName, email } = mockUser;
 
     expect(res.body).toEqual({
-      id: expect.any(String),
+      id: expect.any(Number),
       firstName,
       lastName,
       email,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
     });
   });
 
@@ -50,6 +49,7 @@ describe('user routes', () => {
     const res = await request(app)
       .post('/api/v1/users/sessions')
       .send({ email: 'test@example.com', password: '12345' });
+    console.log(res.body);
     expect(res.status).toEqual(200);
   });
 
@@ -70,28 +70,8 @@ describe('user routes', () => {
     expect(res.status).toEqual(403);
   });
 
-  it('/users should return 200 if user is admin', async () => {
-    const agent = request.agent(app);
-
-    // create a new user
-    await agent.post('/api/v1/users').send({
-      email: 'admin',
-      password: '1234',
-      firstName: 'admin',
-      lastName: 'admin',
-    });
-    // sign in the user
-    await agent
-      .post('/api/v1/users/sessions')
-      .send({ email: 'admin', password: '1234' });
-
-    // const [agent] = await registerAndLogin({ email: 'admin' });
-    const res = await agent.get('/api/v1/users/');
-    expect(res.status).toEqual(200);
-  });
-
   it('/users should return a 200 if user is admin', async () => {
-    const [agent] = await registerAndLogin({ email: 'admin' });
+    const [agent] = await registerAndLogin({ email: 'admin@example.com' });
     const res = await agent.get('/api/v1/users/');
     expect(res.status).toEqual(200);
   });
@@ -101,8 +81,7 @@ describe('user routes', () => {
     const resp = await agent.delete('/api/v1/users/sessions');
     expect(resp.status).toBe(204);
   });
-
-  afterAll(() => {
-    pool.end();
+  afterAll(async () => {
+    await db.sequelize.close();
   });
 });

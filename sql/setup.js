@@ -1,5 +1,5 @@
-require('./lib/app');
-const db = require('./lib/models');
+require('../lib/app');
+const db = require('../lib/models');
 
 async function sync() {
   try {
