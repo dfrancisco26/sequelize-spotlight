@@ -52,7 +52,6 @@ describe('user routes', () => {
     const res = await request(app)
       .post('/api/v1/users/sessions')
       .send({ email: 'test@example.com', password: '12345' });
-    console.log(res.body);
     expect(res.status).toEqual(200);
   });
 

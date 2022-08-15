@@ -68,7 +68,6 @@ describe('restaurant routes', () => {
 
   it('#GET /api/v1/restaurants should return a list of restaurants', async () => {
     const resp = await request(app).get('/api/v1/restaurants');
-    console.log(resp.body);
     expect(resp.status).toBe(200);
     expect(resp.body.length).toBe(2);
   });
@@ -91,25 +90,26 @@ describe('restaurant routes', () => {
       open: '9:00',
       updatedAt: expect.any(String),
       website: 'http://www.andinarestaurant.com/',
+      Reviews: [],
     });
   });
-  it.skip('#POST /restaurants/:id/reviews should create a new review if user logged in', async () => {
-    const [agent] = await registerAndLogin();
+  it('#POST /restaurants/:id/reviews should create a new review if user logged in', async () => {
+    const [agent, user] = await registerAndLogin();
     const resp = await agent
       .post('/api/v1/restaurants/1/reviews')
       .send({ stars: 5, detail: 'Amazing!' });
-
     expect(resp.status).toBe(200);
-    expect(resp.body).toMatchInlineSnapshot(`
-      Object {
-        "detail": "Amazing!",
-        "restaurant_id": "1",
-        "stars": 5,
-        "user_id": "4",
-      }
-    `);
+    expect(resp.body).toEqual({
+      id: user.id,
+      detail: 'Amazing!',
+      restaurantId: 1,
+      stars: 5,
+      userId: 1,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+    });
   });
-  it.skip('#POST /restaurants/:id/reviews should return a 401 if not authenticated', async () => {
+  it('#POST /restaurants/:id/reviews should return a 401 if not authenticated', async () => {
     const resp = await request(app)
       .post('/api/v1/restaurants/1/reviews')
       .send({ stars: 5, detail: 'Amazing!' });
