@@ -30,6 +30,9 @@ describe('user routes', () => {
   beforeEach(async () => {
     await db.sequelize.sync({ force: true });
   });
+  afterAll(async () => {
+    await db.sequelize.close();
+  });
   it('creates a new user', async () => {
     const res = await request(app).post('/api/v1/users').send(mockUser);
     const { firstName, lastName, email } = mockUser;
@@ -80,8 +83,5 @@ describe('user routes', () => {
     const [agent] = await registerAndLogin();
     const resp = await agent.delete('/api/v1/users/sessions');
     expect(resp.status).toBe(204);
-  });
-  afterAll(async () => {
-    await db.sequelize.close();
   });
 });
