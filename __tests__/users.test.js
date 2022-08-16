@@ -76,6 +76,7 @@ describe('user routes', () => {
     const [agent] = await registerAndLogin({ email: 'admin@example.com' });
     const res = await agent.get('/api/v1/users/');
     expect(res.status).toEqual(200);
+    expect(res.body.length).toBe(1);
   });
 
   it('DELETE /sessions deletes the user session', async () => {

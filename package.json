@@ -5,14 +5,16 @@
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
-    "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npm run setup-db && npx sequelize-cli db:seed:all",
+    "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
+    "db:seed": "npx sequelize-cli db:seed",
+    "db:migrate": "npx sequelize-cli db:migrate",
     "pretest": "cross-env NODE_ENV=test npm run db:reset",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --testLocationInResults --setupFiles dotenv/config --passWithNoTests",
     "test:watch": "cross-env NODE_ENV=test npm run test -- --watch",
     "start": "node -r dotenv/config server.js",
     "start:watch": "nodemon -r dotenv/config server.js",
-    "setup-db": "node -r dotenv/config setup-db.js",
-    "setup-heroku": "heroku run npm run setup-db"
+    "heroku-migrate": "heroku run npm run db:migrate",
+    "heroku-reset": "heroku run npm run db:reset"
   },
   "jest": {
     "testEnvironment": "node"
