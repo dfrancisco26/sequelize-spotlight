@@ -22,6 +22,7 @@ This deliverable will be a little different from others and will be more like a 
 - One partner should use this repo as a template and then add partner 2 as a collaborator
 - Both partners should clone the repo, and run:
   - `npm install`
+  - check the settings in config.js to ensure the postgres user and password match your local setup
   - `npm run db:reset`
   - `npx sequelize-cli db:seed:all`
 - Open BeeKeeper and confirm that you have 5 tables in your `yawp_development` database: `Restaurants`, `Reviews`,`SequelizeData`, `SequelizeMeta` and `Users`
