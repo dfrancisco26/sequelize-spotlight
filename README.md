@@ -1,12 +1,8 @@
 # Yawp Restaurant Reviews
 
-## Demo
-
-[Link to Demo]()
-
 ## Getting Started
 
-Use [this template](https://github.com/alchemycodelab/backend-express-template) to get started.
+Use [this template](https://github.com/alchemycodelab/backend-yawp-sequelize) to get started.
 
 ### Learning Objectives
 
