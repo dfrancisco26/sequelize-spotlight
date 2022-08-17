@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate",
-    "db:seed": "npx sequelize-cli db:seed",
+    "db:seed": "npx sequelize-cli db:seed:all",
     "db:migrate": "npx sequelize-cli db:migrate",
     "pretest": "cross-env NODE_ENV=test npm run db:reset",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --testLocationInResults --setupFiles dotenv/config --passWithNoTests",
