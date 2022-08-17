@@ -65,7 +65,7 @@ We need to add our relationships to our migrations and our models. Movies belong
 - Add code in the seeder file to create some demo genres (use existing seeders as examples)
 - Add a new seeder file called `demo-movies` using the sequelize-cli
 - Add code in the seeder file to create some demo movies
-- Run `npx sequelize-cli db:seeds:all` and check BeeKeeper to confirm you have data in your Genres and Movies tables
+- Run `npx sequelize-cli db:seed:all` and check BeeKeeper to confirm you have data in your Genres and Movies tables
 - ACP the seeders and push to your shared repo
 - Have the partner who was navigating, pull down the code and run the seeds
 
@@ -73,4 +73,4 @@ We need to add our relationships to our migrations and our models. Movies belong
 
 - TDD a `/movies` route that returns the list of movies (including the genre)
 - TDD a `/genres` route that return the list of genres
-- TDD a `/genre/:id` route that reutrns a genre with the list of movies in that genre
+- TDD a `/genre/:id` route that returns a genre with the list of movies in that genre
